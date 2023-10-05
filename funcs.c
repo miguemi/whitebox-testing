@@ -29,9 +29,11 @@ int checkArgs(int argc, char *argv[]){
   return argc > 1 && strcmp(argv[1], "-test") == 0;
 }
 
-void printStatus(char* text, int result){
+void printStatus(const char* text, int result){
+  char status[18];
   char buffer[255];
-  (result == EXIT_SUCCESS) ? sprintf(buffer, "* (Test: \"%s\") %s[PASSED] %s", text,COLOR_GREEN, COLOR_RESET)
-  : sprintf(buffer, "* (Test: \"%s\") %s[FAILED] %s", text, COLOR_RED, COLOR_RESET);
-  printf("%s\n", buffer);
+  int green = result == EXIT_SUCCESS;
+  sprintf(status, "%s%s", green ? COLOR_GREEN : COLOR_RED, green ? "[PASSED]" : "[FAILED]");
+  sprintf(buffer,"* (Test: \"%s\")", text);
+  printf("%-70s %8s %s\n", buffer, status, COLOR_RESET);
 }

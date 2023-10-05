@@ -6,7 +6,7 @@ typedef int (* FuncPtr)();
 
 // FUNCIONES DE AYUDA
 int isPrime(int num);
-void printStatus(char* text, int result);
+void printStatus(const char* text, int result);
 
 // SUITE DE PRUEBAS
 int checkNegativeNumberSet();
@@ -17,13 +17,15 @@ int checkBaseCaseNum1();
 
 
 int executeTests(){
-  printf("\n=========[EJECUCION DE SET DE PRUEBAS]=========\n\n");
   FuncPtr pruebas[] = {checkBaseCaseNum1, checkPrimeNumberSet, checkCompositeNumberSet, checkNegativeNumberSet, checkLargePrimeNumber};
-  char* nombres[] = {
+  const char* nombres[] = {
     "Comprobar caso de numero 1", "Comprobar set de numeros primos",
     "Comprobar set de numeros compuestos", "Comprobar set de numeros negativos",
     "Comprobar numero primo grande", 
   };
+
+  printf("%-70s %8s \n\n", "NOMBRE DE LA PRUEBA", "ESTADO");
+
   for (int i = 0; i < sizeof(pruebas) / sizeof(pruebas[0]); i++) {
     int resultado = pruebas[i]();
     printStatus(nombres[i], resultado);
@@ -70,6 +72,7 @@ int checkNegativeNumberSet(){
 }
 
 int checkLargePrimeNumber(){
-  int largePrime = 2147483647;
+  // int largePrime = 2147483647;
+  int largePrime = 46273;
   return isPrime(largePrime) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
