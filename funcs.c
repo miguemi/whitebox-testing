@@ -31,9 +31,24 @@ int checkArgs(int argc, char *argv[]){
 
 void printStatus(const char* text, int result){
   char status[18];
-  char buffer[255];
+  char buffer[100];
+  char combined[256];
   int green = result == EXIT_SUCCESS;
   sprintf(status, "%s%s", green ? COLOR_GREEN : COLOR_RED, green ? "[PASSED]" : "[FAILED]");
   sprintf(buffer,"* (Test: \"%s\")", text);
   printf("%-70s %8s %s\n", buffer, status, COLOR_RESET);
+}
+
+char* getTestOutput(const char* text, int result){
+  char status[18];
+  char buffer[100];
+  char combined[256];
+  char* cadena = (char*)malloc(256 * sizeof(char));
+
+  int green = result == EXIT_SUCCESS;
+  sprintf(status, "%s%s", green ? COLOR_GREEN : COLOR_RED, green ? "[PASSED]" : "[FAILED]");
+  sprintf(buffer,"* (Test: \"%s\")", text);
+  sprintf(combined, "%-70s %8s %s\n", buffer, status, COLOR_RESET);
+  strcpy(cadena, combined);
+  return cadena;
 }

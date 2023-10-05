@@ -1,12 +1,21 @@
 #include <cstdlib>
 #include <stdio.h>
+#include <time.h>
 #include "funcs.h"
 
+//type definitions
 typedef int (* FuncPtr)();
+
+typedef struct {
+  double execute_time;
+  char** output_list;
+  int success;
+} TestResult;
 
 // FUNCIONES DE AYUDA
 int isPrime(int num);
 void printStatus(const char* text, int result);
+char* getTestOutput(const char* text, int result);
 
 // SUITE DE PRUEBAS
 int checkNegativeNumberSet();
@@ -16,25 +25,50 @@ int checkLargePrimeNumber();
 int checkBaseCaseNum1();
 
 
+
+
 int executeTests(){
+
+  TestResult result;
+  clock_t start_time, end_time;
+  double exec_time;
+
   FuncPtr pruebas[] = {checkBaseCaseNum1, checkPrimeNumberSet, checkCompositeNumberSet, checkNegativeNumberSet, checkLargePrimeNumber};
   const char* nombres[] = {
-    "Comprobar caso de numero 1", "Comprobar set de numeros primos",
-    "Comprobar set de numeros compuestos", "Comprobar set de numeros negativos",
+    "Comprobar caso numero 1", "Comprobar set numeros primos",
+    "Comprobar set numeros compuestos", "Comprobar de numeros negativos",
     "Comprobar numero primo grande", 
   };
+  int testSize = sizeof(pruebas) / sizeof(pruebas[0]);
 
-  printf("%-70s %8s \n\n", "NOMBRE DE LA PRUEBA", "ESTADO");
+  //START TRACKING TIME
+  start_time = clock();
 
-  for (int i = 0; i < sizeof(pruebas) / sizeof(pruebas[0]); i++) {
+  for (int i = 0; i < testSize; i++) {
     int resultado = pruebas[i]();
-    printStatus(nombres[i], resultado);
+    char* cadena = getTestOutput(nombres[i], resultado);
+    printf("xd: %s\n", cadena);
+    free(cadena);
+
     if(resultado == EXIT_FAILURE){
+      //CALCULATE TEST DURATION
+      end_time = clock();
+      exec_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+      result.execute_time = exec_time;
       return resultado;
     }
   }
+
+
+  //CALCULATE TEST DURATION
+  end_time = clock();
+  exec_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+  result.execute_time = exec_time;
+
   return EXIT_SUCCESS;
 }
+
+
 
 
 // AREA DE PRUEBAS
