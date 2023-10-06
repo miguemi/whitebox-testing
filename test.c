@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <stdio.h>
 #include <time.h>
+#include <cstring>
 #include "funcs.h"
 
 //type definitions
@@ -9,12 +10,11 @@ typedef int (* FuncPtr)();
 typedef struct {
   double execute_time;
   char** output_list;
-  int success;
+  int exit_code;
 } TestResult;
 
 // FUNCIONES DE AYUDA
 int isPrime(int num);
-void printStatus(const char* text, int result);
 char* getTestOutput(const char* text, int result);
 
 // SUITE DE PRUEBAS
@@ -25,13 +25,7 @@ int checkLargePrimeNumber();
 int checkBaseCaseNum1();
 
 
-
-
-int executeTests(){
-
-  TestResult result;
-  clock_t start_time, end_time;
-  double exec_time;
+TestResult executeTests(){
 
   FuncPtr pruebas[] = {checkBaseCaseNum1, checkPrimeNumberSet, checkCompositeNumberSet, checkNegativeNumberSet, checkLargePrimeNumber};
   const char* nombres[] = {
@@ -40,36 +34,45 @@ int executeTests(){
     "Comprobar numero primo grande", 
   };
   int testSize = sizeof(pruebas) / sizeof(pruebas[0]);
-
-  //START TRACKING TIME
+  // TEST RESULT VARIABLES
+  TestResult result;
+  clock_t start_time, end_time;
+  double exec_time;
+  //START TRACKING
   start_time = clock();
+  result.output_list = (char**)malloc(testSize * sizeof(char*));
+  for (int i = 0; i < testSize; i++) {
+    result.output_list[i] = NULL; // Inicializar a NULL
+    // Resto del código...
+  }
 
   for (int i = 0; i < testSize; i++) {
     int resultado = pruebas[i]();
-    char* cadena = getTestOutput(nombres[i], resultado);
-    printf("xd: %s\n", cadena);
-    free(cadena);
+    char* resultString = getTestOutput(nombres[i], resultado);
+    // Asignar memoria para la string y copiar el contenido
+    result.output_list[i] = (char*)malloc((strlen(resultString) + 1) * sizeof(char));
+    strcpy(result.output_list[i], resultString);
+    // Liberar la memoria de resultString ya que no se necesita más
+    free(resultString);
 
     if(resultado == EXIT_FAILURE){
       //CALCULATE TEST DURATION
       end_time = clock();
       exec_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
       result.execute_time = exec_time;
-      return resultado;
+      result.exit_code = EXIT_FAILURE;
+      return result;
     }
   }
-
 
   //CALCULATE TEST DURATION
   end_time = clock();
   exec_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
   result.execute_time = exec_time;
+  result.exit_code = EXIT_SUCCESS;
 
-  return EXIT_SUCCESS;
+  return result;
 }
-
-
-
 
 // AREA DE PRUEBAS
 int checkBaseCaseNum1(){
