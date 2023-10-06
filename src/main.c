@@ -22,7 +22,7 @@ void mainProgram(){
   char c = 'c';
 
   do {
-    system("clear");
+    system("cls||clear");
     printf("\nPor favor ingresa un numero: ");
     int elementosLeidos = scanf("%d", &numero);
     if (elementosLeidos != 1) {

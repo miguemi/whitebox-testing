@@ -8,6 +8,9 @@ CFLAGS = -Wall -Wextra -std=c++11
 SRCDIR = src
 BINDIR = bin
 
+# Crea el directorio bin si no existe
+$(shell mkdir -p $(BINDIR))
+
 # Lista de archivos fuente
 SOURCES := $(wildcard $(SRCDIR)/*.c)
 
@@ -27,7 +30,10 @@ $(BINDIR)/%.o: $(SRCDIR)/%.c
 
 # Regla para limpiar los archivos generados
 clean:
-	rm -f $(BINDIR)/*.o $(TARGET)
+	rm -rf $(BINDIR) $(TARGET)
+
+test:
+	./whitebox.out -test
 
 # Marcar las reglas que no son archivos
 .PHONY: clean
