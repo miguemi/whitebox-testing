@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <stdio.h>
-#include "test.h"
-#include "funcs.h"
+#include "tests.h"
+#include "utils.h"
 
 int executeTests(); 
 int isPrime(int number);
