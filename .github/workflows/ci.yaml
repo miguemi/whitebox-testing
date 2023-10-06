@@ -1,0 +1,17 @@
+name: Continuous Integration (Prime Numbers)
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: make
+
+      - name: Run Tests
+        run: make test
