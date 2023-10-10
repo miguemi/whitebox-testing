@@ -10,7 +10,13 @@ int isPrime(int number) {
   if (number < 2) { 
     return false; 
   }
-
+  for (int i = 2; i * i <= number; i++) {
+    if (number % i == 0) {
+      return false;
+    }
+  }
+  return true;
+}
 
 int checkArgs(int argc, char *argv[]){
   return argc > 1 && strcmp(argv[1], "-test") == 0;
