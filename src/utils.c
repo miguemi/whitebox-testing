@@ -7,7 +7,9 @@
 #define COLOR_RESET   "\x1b[0m"
 
 int isPrime(int number) {
- 
+  if (number < 2) { 
+    return false; 
+  }
   for (int i = 2; i * i <= number; i++) {
     if (number % i == 0) {
       return false;
